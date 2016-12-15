@@ -112,16 +112,13 @@ php /preset.php
 
 if [ ! -z "$KD_PLUGIN_URL" ]; then
     set +e
-    curl -o /tmp/kd-plugin.zip $KD_PLUGIN_URL
-    cp /tmp/kd-plugin.zip /var/opt/whmcs/kd-plugin.zip
-
-    unzip /tmp/kd-plugin.zip deploy.php
-    cp /tmp/deploy.php $ROOT/deploy.php
+    curl -o $ROOT/kd-plugin.zip $KD_PLUGIN_URL
+    unzip $ROOT/kd-plugin.zip deploy.php -d $ROOT
 
     php $ROOT/deploy.php --local=$ROOT/kd-plugin.zip --kd_ip=$KD_IP --kd_login=$KD_LOGIN --kd_password=$KD_PASSWORD
     chmod -R g-w $ROOT/.*
 
-    cp kdplugin.php $ROOT/
+    cp /kdplugin.php $ROOT
     php $ROOT/kdplugin.php
     set -e
 fi
