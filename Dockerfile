@@ -76,6 +76,7 @@ COPY scripts/preset.php /
 COPY scripts/reset.php /
 COPY scripts/dbdump.sh /
 COPY scripts/dbload.sh /
+COPY scripts/kdplugin.sh /
 
 WORKDIR /var/opt/whmcs
 
