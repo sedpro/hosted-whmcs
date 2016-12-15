@@ -110,14 +110,18 @@ test -e $ROOT/configuration.php || ln -s $WHMCSCONF $ROOT
 
 php /preset.php
 
-if [ -z "WHMCS_IP" ];then
-    curl -O http://repo.cloudlinux.com/kuberdock/whmcs-kuberdock-plugin-latest.zip $ROOT/kd-plugin.zip
-    unzip kd-plugin.zip deploy.php
+if [ ! -z "$WHMCS_IP" ]; then
+    curl -O http://repo.cloudlinux.com/kuberdock/whmcs-kuberdock-plugin-latest.zip
+    cp /whmcs-kuberdock-plugin-latest.zip /var/opt/whmcs/kd-plugin.zip
+
+    unzip whmcs-kuberdock-plugin-latest.zip deploy.php
+    cp deploy.php $ROOT/deploy.php
 
     php $ROOT/deploy.php --local=$ROOT/kd-plugin.zip --kd_ip=$KD_IP --kd_login=$KD_LOGIN --kd_password=$KD_PASSWORD
     chmod -R g-w $ROOT/.*
 
-    php /kdplugin.php
+    cp kdplugin.php $ROOT/
+    php $ROOT/kdplugin.php
 fi
 
 for var in DB_USERNAME DB_HOST DB_NAME DB_PASSWORD LICENSE TEMPLATES_COMPILEDIR PASSWORD SMTP_USERNAME SMTP_PASSWORD SMTP_HOST;do

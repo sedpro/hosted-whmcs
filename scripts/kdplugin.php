@@ -21,7 +21,7 @@ try {
     $db = new PDO("mysql:host=${db_host};dbname=${db_name}", $db_username, $db_password);
 
     $sql = "UPDATE tblconfiguration SET VALUE=? WHERE setting='SystemURL'";
-    $st = $db->prepare($sql)->execute(array($whcms_ip));
+    $st = $db->prepare($sql)->execute(array('http://' . $whcms_ip));
 
     $sql = "INSERT INTO tbladdonmodules VALUES ('KuberDock', 'version', ?), ('KuberDock', 'access', 1);";
     $st = $db->prepare($sql)->execute(array($kd_config['version']));
