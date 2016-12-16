@@ -111,16 +111,17 @@ test -e $ROOT/configuration.php || ln -s $WHMCSCONF $ROOT
 php /preset.php
 
 if [ ! -z "$KD_PLUGIN_URL" ]; then
-    set +e
     curl -o $ROOT/kd-plugin.zip $KD_PLUGIN_URL
     unzip $ROOT/kd-plugin.zip deploy.php -d $ROOT
+
+    echo "$ROOT/deploy.php"
+    echo "--local=$ROOT/kd-plugin.zip --kd_ip=$KD_IP --kd_login=$KD_LOGIN --kd_password=$KD_PASSWORD"
 
     php $ROOT/deploy.php --local=$ROOT/kd-plugin.zip --kd_ip=$KD_IP --kd_login=$KD_LOGIN --kd_password=$KD_PASSWORD
     chmod -R g-w $ROOT/.*
 
     cp /kdplugin.php $ROOT
     php $ROOT/kdplugin.php
-    set -e
 fi
 
 for var in DB_USERNAME DB_HOST DB_NAME DB_PASSWORD LICENSE TEMPLATES_COMPILEDIR PASSWORD SMTP_USERNAME SMTP_PASSWORD SMTP_HOST;do
