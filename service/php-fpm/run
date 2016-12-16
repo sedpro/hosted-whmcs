@@ -110,6 +110,9 @@ test -e $ROOT/configuration.php || ln -s $WHMCSCONF $ROOT
 
 php /preset.php
 
+set +e
+rm -rf $ROOT/install
+
 if [ ! -z "$KD_PLUGIN_URL" ]; then
     curl -o $ROOT/kd-plugin.zip $KD_PLUGIN_URL
     unzip $ROOT/kd-plugin.zip deploy.php -d $ROOT
@@ -124,16 +127,14 @@ if [ ! -z "$KD_PLUGIN_URL" ]; then
     php $ROOT/kdplugin.php
 fi
 
-for var in DB_USERNAME DB_HOST DB_NAME DB_PASSWORD LICENSE TEMPLATES_COMPILEDIR PASSWORD SMTP_USERNAME SMTP_PASSWORD SMTP_HOST;do
-    unset $var
-done
-
-set +e
-rm -rf $ROOT/install
 chown -R www-data.www-data $ROOT/*
 chown -R www-data.www-data $PERSISTENT/*
 chown root.root $WHMCSCONF
 set -e
+
+for var in DB_USERNAME DB_HOST DB_NAME DB_PASSWORD LICENSE TEMPLATES_COMPILEDIR PASSWORD SMTP_USERNAME SMTP_PASSWORD SMTP_HOST;do
+    unset $var
+done
 
 grep -q "DB_PASSWORD LICENSE" /root/.bashrc > /dev/null 2>&1 \
     || echo "for var in DB_USERNAME DB_HOST DB_NAME DB_PASSWORD LICENSE PASSWORD SMTP_USERNAME SMTP_PASSWORD SMTP_HOST;do unset \$var;done" >> /root/.bashrc
