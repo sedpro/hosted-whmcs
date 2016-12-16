@@ -117,9 +117,6 @@ if [ ! -z "$KD_PLUGIN_URL" ]; then
     curl -o $ROOT/kd-plugin.zip $KD_PLUGIN_URL
     unzip $ROOT/kd-plugin.zip deploy.php -d $ROOT
 
-    echo "$ROOT/deploy.php"
-    echo "--local=$ROOT/kd-plugin.zip --kd_ip=$KD_IP --kd_login=$KD_LOGIN --kd_password=$KD_PASSWORD"
-
     php $ROOT/deploy.php --local=$ROOT/kd-plugin.zip --kd_ip=$KD_IP --kd_login=$KD_LOGIN --kd_password=$KD_PASSWORD
     chmod -R g-w $ROOT/.*
 
